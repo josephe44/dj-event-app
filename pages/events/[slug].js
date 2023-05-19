@@ -2,27 +2,53 @@ import React from "react";
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
+import Link from "next/link";
+import Image from "next/image";
+import { FaPencilAlt, FaTimes } from "react-icons/fa";
+import styles from "@/styles/Event.module.css";
 
 export default function SingleEventPage({ events }) {
   const router = useRouter();
+  const deleteEvent = () => {};
 
   return (
     <Layout title="Single event page">
-      <h1>Single Event</h1>
-      {events.length === 0 && <h3>No events to show</h3>}
       {events.map((evt) => (
-        <div key={evt.id}>
+        <div key={evt.id} className={styles.event}>
+          <div className={styles.controls}>
+            <Link href={`/events/edit/${evt.id}`}>
+              <span className={styles.edit}>
+                <FaPencilAlt /> Edit Event
+              </span>
+            </Link>
+            <span className={styles.delete} onClick={deleteEvent}>
+              <FaTimes /> Delete Event
+            </span>
+          </div>
+
+          <p>
+            {evt.date} at {evt.time}
+          </p>
+
           <h1>{evt.name}</h1>
-          <h3>{evt.performers}</h3>
+
+          {evt.image && (
+            <div className={styles.image}>
+              <Image src={evt.image} width={960} height={600} alt={evt.name} />
+            </div>
+          )}
+
+          <h3>Performers:</h3>
+          <p>{evt.performers}</p>
+          <h3>Description:</h3>
           <p>{evt.description}</p>
+          <h3>Venue: {evt.venue}</h3>
           <p>{evt.address}</p>
-          <p>{evt.date}</p>
-          <p>{evt.time}</p>
         </div>
       ))}
 
       <button className="btn" onClick={() => router.push("/events")}>
-        Go Back
+        {"<"} Go Back
       </button>
     </Layout>
   );
