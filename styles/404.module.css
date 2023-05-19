@@ -1,0 +1,15 @@
+.error {
+  /* give error styles for 404 */
+  padding: 30px;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 600px;
+  border-radius: 5px;
+  margin-top: 50px;
+}
+
+.error h1 {
+  font-size: 50px;
+  margin-bottom: 20px;
+  color: red;
+}
