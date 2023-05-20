@@ -1,13 +1,18 @@
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import EventItem from "@/components/EventItem";
+import axios from "axios";
 import { API_URL } from "@/config/index";
 
+const base_url = process.env.NEXT_PUBLIC_BASE_URL;
+
 export default function Home({ events }) {
+  console.log(events);
+  console.log(API_URL);
   return (
     <Layout>
       <h1>Upcoming Events</h1>
-      {events.length === 0 && <h3>No events to show</h3>}
+      {/* {events.length === 0 && <h3>No events to show</h3>}
       {events.map((evt) => (
         <EventItem key={evt.id} evt={evt} />
       ))}
@@ -15,17 +20,27 @@ export default function Home({ events }) {
         <Link href="/events">
           <span className="btn-secondary">View All Events</span>
         </Link>
-      )}
+      )} */}
     </Layout>
   );
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${API_URL}/api/events`);
-  const events = await res.json();
+  try {
+    const res = await axios.get(`${API_URL}/api/events/?populate=*`);
+    console.log(res.data);
 
-  return {
-    props: { events: events.slice(0, 3) },
-    revalidate: 1,
-  };
+    return {
+      props: {
+        events: res.data,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        events: [],
+      },
+    };
+  }
 }
