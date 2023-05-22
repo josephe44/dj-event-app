@@ -8,11 +8,10 @@ const base_url = process.env.NEXT_PUBLIC_BASE_URL;
 
 export default function Home({ events }) {
   console.log(events);
-  console.log(API_URL);
   return (
     <Layout>
       <h1>Upcoming Events</h1>
-      {/* {events.length === 0 && <h3>No events to show</h3>}
+      {events.length === 0 && <h3>No events to show</h3>}
       {events.map((evt) => (
         <EventItem key={evt.id} evt={evt} />
       ))}
@@ -20,7 +19,7 @@ export default function Home({ events }) {
         <Link href="/events">
           <span className="btn-secondary">View All Events</span>
         </Link>
-      )} */}
+      )}
     </Layout>
   );
 }
@@ -28,11 +27,10 @@ export default function Home({ events }) {
 export async function getStaticProps() {
   try {
     const res = await axios.get(`${API_URL}/api/events/?populate=*`);
-    console.log(res.data);
 
     return {
       props: {
-        events: res.data,
+        events: res?.data?.data.slice(0, 2),
       },
     };
   } catch (error) {
