@@ -18,6 +18,7 @@ export default function EventItem({ evt }) {
           width={170}
           height={100}
           alt={evt.attributes.name}
+          priority="high"
         />
       </div>
       <div className={styles.info}>
