@@ -8,10 +8,21 @@ import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import axios from "axios";
 import styles from "@/styles/Event.module.css";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
 
 export default function SingleEventPage({ events }) {
   const router = useRouter();
-  const deleteEvent = () => {};
+  const deleteEvent = () => {
+    if (confirm("Are you sure?")) {
+      axios
+        .delete(`${API_URL}/api/events/${events?.id}`)
+        .then(() => {
+          router.push("/events");
+          toast.success("Event Deleted");
+        })
+        .catch((err) => console.log(err));
+    }
+  };
   console.log(events);
 
   return (
