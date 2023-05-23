@@ -29,7 +29,7 @@ export default function SingleEventPage({ events }) {
     <Layout title="Single event page">
       <div className={styles.event}>
         <div className={styles.controls}>
-          <Link href={`/events/edit/${events?.id}`}>
+          <Link href={`/events/edit/${events?.attributes?.slug}`}>
             <span className={styles.edit}>
               <FaPencilAlt /> Edit Event
             </span>
