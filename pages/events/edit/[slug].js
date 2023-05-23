@@ -22,10 +22,12 @@ export default function EditEventPage({ event }) {
     description: event?.attributes?.description,
   });
   const [imagePreview, setImagePreview] = useState(
-    event?.attributes?.image?.data?.attributes?.formats?.thumbnail?.url || null
+    event?.attributes?.image?.data?.attributes?.formats?.thumbnail?.url ||
+      event?.attributes?.image?.data?.attributes?.url
   );
-
   const [showModal, setShowModal] = useState(false);
+  const [image, setImage] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,6 +68,48 @@ export default function EditEventPage({ event }) {
 
   const onHandleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const imageUploaded = async (e) => {
+    e.preventDefault();
+
+    setIsUploading(true);
+
+    console.log(image);
+
+    const formData = new FormData();
+    formData.append("files", image);
+    formData.append("ref", "api::event.event");
+    formData.append("refId", event?.id);
+    formData.append("field", "image");
+
+    try {
+      const res = await axios.post(`${API_URL}/api/upload`, formData);
+      const ImageData = res.data[0];
+
+      console.log(res.data[0]);
+
+      console.log(ImageData?.formats?.thumbnail?.url);
+      console.log(ImageData?.url);
+
+      setImagePreview(
+        ImageData?.formats?.thumbnail?.url
+          ? ImageData?.formats?.thumbnail?.url
+          : ImageData?.url
+      );
+      setShowModal(false);
+      setImage(null);
+      setIsUploading(false);
+    } catch (error) {
+      console.log(error.response.data);
+      setIsUploading(false);
+      return toast.error("Something Went Wrong");
+    }
+  };
+
+  const handleFileChange = (e) => {
+    setImage(e.target.files[0]);
+    setShowModal(true);
   };
 
   return (
@@ -176,7 +220,18 @@ export default function EditEventPage({ event }) {
                 Close
               </button>
             </div>
-            <div className={styles.modalGrid}></div>
+            <div className={styles.modalGrid}>
+              <form onSubmit={imageUploaded} className={styles.form}>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className={styles.file}
+                />
+                <button className="btn" disabled={isUploading}>
+                  {isUploading ? "Uploading..." : "Upload"}
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}
