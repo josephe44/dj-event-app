@@ -25,6 +25,8 @@ export default function EditEventPage({ event }) {
     event?.attributes?.image?.data?.attributes?.formats?.thumbnail?.url || null
   );
 
+  const [showModal, setShowModal] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -157,10 +159,27 @@ export default function EditEventPage({ event }) {
       )}
 
       <div>
-        <button className="btn-secondary">
+        <button className="btn-secondary" onClick={() => setShowModal(true)}>
           <FaImage /> Set Image
         </button>
       </div>
+
+      {showModal && (
+        <div className={styles.modal}>
+          <div className={styles.modalBody}>
+            <div className={styles.modalHeader}>
+              <h4>Image Upload</h4>
+              <button
+                className="btn-secondary"
+                onClick={() => setShowModal(false)}
+              >
+                Close
+              </button>
+            </div>
+            <div className={styles.modalGrid}></div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 }
