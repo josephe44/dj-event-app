@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { API_URL } from "@/config/index";
 import Layout from "@/components/Layout";
+import { toast } from "react-toastify";
+import axios from "axios";
 import styles from "@/styles/Form.module.css";
 
 export default function AddEventPage() {
@@ -17,9 +19,41 @@ export default function AddEventPage() {
     description: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+
+    // Validation
+    const hasEmptyFields = Object.values(values).some(
+      (element) => element === ""
+    );
+    if (hasEmptyFields) {
+      return toast.error("Please fill in all fields");
+    }
+
+    const str = values.name;
+    const modifiedStr = str.replace(/\s+/g, "-").toLowerCase();
+
+    try {
+      const res = await axios.post(`${API_URL}/api/events`, {
+        data: {
+          name: values.name,
+          performers: values.performers,
+          venue: values.venue,
+          address: values.address,
+          date: values.date,
+          time: values.time,
+          description: values.description,
+          slug: modifiedStr,
+        },
+      });
+
+      const evt = res.data.data.attributes;
+      router.push(`/events/${evt?.slug}`);
+      console.log(evt);
+    } catch (error) {
+      console.log(error.response.data);
+      return toast.error("Something Went Wrong");
+    }
   };
 
   const onHandleChange = (e) => {
