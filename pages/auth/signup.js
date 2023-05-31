@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaUser } from "react-icons/fa";
 import Layout from "@/components/Layout";
 import styles from "@/styles/Form.module.css";
+import { toast } from "react-toastify";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -9,13 +11,19 @@ export default function Signup() {
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
+    if (!name || !email || !password) {
+      return toast.error("Please fill in all fields");
+    }
   };
   return (
     <Layout title="User Signup">
-      <h1>Sign Up</h1>
-      <form className={styles.form}>
+      <div className="center">
+        <FaUser size={36} />
+        <h1>Sign up</h1>
+      </div>
+      <form className={styles.form} onSubmit={onHandleSubmit}>
         <div>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Usernname</label>
           <input type="text" id="name" />
         </div>
         <div>
