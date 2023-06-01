@@ -32,6 +32,13 @@ export default function Header() {
                   <span>Add Event</span>
                 </Link>
               </li>
+
+              <li>
+                <Link href="/auth/dashboard">
+                  <span>Dashboard</span>
+                </Link>
+              </li>
+
               <li>
                 <button className="btn-secondary btn-icon" onClick={logout}>
                   <span className="btn-icon">
@@ -39,12 +46,6 @@ export default function Header() {
                     Logout
                   </span>
                 </button>
-              </li>
-
-              <li>
-                <Link href="/auth/dashboard">
-                  <span>Dashboard</span>
-                </Link>
               </li>
             </>
           ) : (

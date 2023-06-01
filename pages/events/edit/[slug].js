@@ -239,10 +239,12 @@ export default function EditEventPage({ event }) {
   );
 }
 
-export async function getServerSideProps({ params: { slug } }) {
+export async function getServerSideProps({ params: { slug }, req }) {
   try {
     const res = await axios.get(`${API_URL}/api/events/${slug}?populate=*`);
     const event = res?.data?.data;
+
+    // console.log(req.headers.cookie);
 
     return {
       props: {

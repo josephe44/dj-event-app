@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { FaUser } from "react-icons/fa";
 import Layout from "@/components/Layout";
-import styles from "@/styles/Form.module.css";
+import styles from "@/styles/Auth.module.css";
 import { toast } from "react-toastify";
 import AuthContext from "@/context/AuthContext";
 
@@ -9,6 +9,8 @@ export default function Login() {
   const { login, error } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  console.log(error);
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
@@ -41,10 +43,10 @@ export default function Login() {
           />
         </div>
         <input type="submit" value="Login" className="btn btn-secondary" />
+        <p>
+          Don&apos;t have an account? <a href="/auth/signup">Sign Up</a>
+        </p>
       </form>
-      <p>
-        Don&apos;t have an account? <a href="/auth/signup">Sign Up</a>
-      </p>
     </Layout>
   );
 }
